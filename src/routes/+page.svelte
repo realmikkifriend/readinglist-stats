@@ -43,9 +43,15 @@
 		</select>
 
 		{#if typeof token !== 'string' || token.length === 0}
-			<button>
-				<a href={authUri} class="button">Authorize Pocket</a>
-			</button>
+			<div class="flex flex-row">
+				<button class="mr-2 mt-1 h-fit">
+					<a href={authUri} class="button whitespace-nowrap">Authorize Pocket</a>
+				</button>
+				<p>
+					This mini-app will grab a copy of your current <a href="https://getpocket.com/">Pocket</a>
+					reading list and then display some stats and charts.
+				</p>
+			</div>
 		{:else if list.length > 0}
 			<QuickReference {list} />
 			<Charts {list} />
@@ -55,8 +61,9 @@
 		{/if}
 
 		<footer>
-			created by <a href="https://github.com/realmikkifriend/">Mikki Friend</a>, not endorsed by
-			Pocket, no data is stored
+			<a href="https://github.com/realmikkifriend/pocket-stats">open-source app</a> created by
+			<a href="https://github.com/realmikkifriend/">Mikki Friend</a><br />
+			not endorsed by Pocket &bull; no personal data is stored
 		</footer>
 	</div>
 </div>
