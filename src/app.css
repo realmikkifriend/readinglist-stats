@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	font-family: 'Plus Jakarta Sans Variable', sans-serif;
+	@apply text-lg;
+}
+
+footer {
+	@apply text-sm mt-4;
+}
+
+h1,
+h2,
+h3 {
+	@apply font-bold text-accent capitalize;
+}
+
+h1 {
+	@apply text-4xl;
+}
+h2 {
+	@apply text-3xl text-right border-b-2 my-2;
+}
+h3 {
+	@apply text-2xl text-center my-4;
+}
+h4 {
+	@apply text-lg;
+}
+
+#quickreference li {
+	@apply ml-6 -indent-6;
+}
+
+span.meta {
+	@apply opacity-70;
+}
+
+#quickreference .meta {
+	@apply italic whitespace-nowrap;
+}
+
+td {
+	@apply align-top;
+}
+
+td:first-child {
+	@apply whitespace-nowrap pr-2 font-bold;
+}
+
+.chart {
+	@apply bg-primary mb-4 mx-auto;
+}
+
+.chart text,
+.sidelabel,
+.bottomlabel,
+.tick {
+	@apply text-accent fill-accent;
+}
+.domain {
+	@apply stroke-accent;
+}
+
+.chart#chart-tags text {
+	@apply fill-white;
+}
+
+.sidelabel,
+.bottomlabel {
+	@apply text-xs;
+}
+
+.pie-text {
+	@apply text-[.75rem] font-bold;
+}
+
+.sidelabel {
+	@apply -rotate-90;
+}
+
+a {
+	@apply text-link underline font-bold;
+}
+
+button {
+	@apply inline-block px-4 py-2 bg-accent rounded-lg;
+}
+
+button > a {
+	@apply no-underline text-link;
+}
