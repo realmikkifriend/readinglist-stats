@@ -38,10 +38,9 @@ export function getFilteredList(list) {
 }
 
 export function calculateWeeksAgo(timeAdded) {
-	const weeksAgo = DateTime.now().diff(
-		DateTime.fromSeconds(parseInt(timeAdded, 10)),
-		'weeks'
-	).weeks;
+	const now = DateTime.now().startOf('week');
+	const pastDate = DateTime.fromSeconds(parseInt(timeAdded, 10)).startOf('week');
+	const weeksAgo = now.diff(pastDate, 'weeks').weeks;
 	return Math.floor(weeksAgo);
 }
 
