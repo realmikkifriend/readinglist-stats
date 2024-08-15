@@ -67,15 +67,18 @@
 			.attr('transform', `translate(0,${height - margin.bottom})`)
 			.call(d3.axisBottom(x));
 
-		svg.append('g').attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(y));
+		const yAxisGroup = svg
+			.append('g')
+			.attr('transform', `translate(${margin.left},0)`)
+			.call(d3.axisLeft(y).ticks(d3.max(data, (d) => d.value)));
 
-		svg
-			.append('text')
-			.attr('x', width / 1.75)
-			.attr('y', height + margin.bottom * 1.5)
-			.attr('text-anchor', 'middle')
-			.attr('class', 'bottomlabel')
-			.text('By Weeks Ago Saved');
+		yAxisGroup.selectAll('.tick').each(function (d) {
+			if (!Number.isInteger(d)) {
+				d3.select(this).remove();
+			} else {
+				d3.select(this).select('text').text(Math.round(d));
+			}
+		});
 
 		svg
 			.append('text')
