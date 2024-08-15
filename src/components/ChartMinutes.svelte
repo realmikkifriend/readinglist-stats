@@ -62,7 +62,7 @@
 			.attr('transform', `translate(0,${height - margin.bottom})`)
 			.call(d3.axisBottom(x));
 
-		if (data.length >= 16) {
+		if (data.length >= 15) {
 			xAxisGroup.selectAll('text').attr('transform', 'translate(8, 4) rotate(45)');
 		}
 
