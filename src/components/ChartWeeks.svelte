@@ -20,7 +20,7 @@
 				(d) => d.weeks_ago
 			),
 			([weeks_ago, count]) => ({ weeks_ago, count })
-		).sort((a, b) => a.weeks_ago + b.weeks_ago);
+		).sort((a, b) => b.weeks_ago - a.weeks_ago);
 
 		const svg = d3.select('#chart-weeks').attr('width', 250).attr('height', 250);
 		const margin = { top: 20, right: 8, bottom: 15, left: 50 };
