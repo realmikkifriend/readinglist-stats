@@ -30,15 +30,13 @@
 	<div class="min-h-14">
 		<p class="text-sm">
 			<span class="meta">
-				{getDomain(item.resolved_url)}
-				{@html typeof item.time_to_read === 'number' ? `&bull; ${item.time_to_read} minutes` : ''}
 				{#if item.tags && Object.keys(item.tags).length > 0}
-					&bull; tagged
 					{#each Object.values(item.tags) as tag, index}
-						'{tag.tag}'{#if index < Object.values(item.tags).length - 1},
-						{/if}
+						<span class="chip">{tag.tag}</span>
 					{/each}
 				{/if}
+				{getDomain(item.resolved_url)}
+				{@html typeof item.time_to_read === 'number' ? `&bull; ${item.time_to_read} minutes` : ''}
 			</span>
 
 			{@html item.excerpt ? item.excerpt : '<i>Article excerpt will appear here...</i>'}

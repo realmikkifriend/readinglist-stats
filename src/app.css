@@ -86,9 +86,13 @@ a {
 }
 
 button {
-	@apply inline-block px-4 py-2 bg-accent rounded-lg;
+	@apply select-none inline-block px-4 py-2 bg-accent rounded-lg;
 }
 
 button > a {
 	@apply no-underline text-link;
+}
+
+.chip {
+	@apply relative select-none items-center whitespace-nowrap rounded-lg bg-slate-700 py-1 px-1.5 mr-0.5 text-[0.6rem] font-bold uppercase text-white;
 }
