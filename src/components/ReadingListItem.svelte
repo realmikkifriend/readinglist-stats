@@ -10,7 +10,6 @@
 			return '';
 		}
 	}
-	console.log(item);
 </script>
 
 <li class="my-4 min-h-[6.75rem] line-clamp-3">
