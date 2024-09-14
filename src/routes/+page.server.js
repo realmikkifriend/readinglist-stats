@@ -45,7 +45,10 @@ export async function load({ fetch }) {
 	const data = {
 		consumer_key: consumerKey,
 		access_token: accessToken,
-		detailType: 'complete'
+		detailType: 'complete',
+		state: 'unread',
+		sort: 'oldest',
+		count: 1000
 	};
 
 	let response = null;
