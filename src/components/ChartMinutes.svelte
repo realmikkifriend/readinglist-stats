@@ -42,7 +42,7 @@
 			.domain([d3.min(data, (d) => d.time_added), d3.max(data, (d) => d.time_added)])
 			.range([0, 1]);
 
-		const colors = ['--twc-primary', '#08306B', '--twc-primary'];
+		const colors = ['--twc-primary', '#08306B'];
 		const interpolator = d3.interpolateRgbBasis(colors);
 
 		svg
