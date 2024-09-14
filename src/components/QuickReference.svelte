@@ -31,7 +31,9 @@
 				(article) => !article.tags || Object.keys(article.tags).length === 0
 			);
 
-			noTimeToReadArticles = list.filter((article) => article.time_to_read == null);
+			noTimeToReadArticles = list.filter(
+				(article) => article.time_to_read == null || article.time_to_read < 1
+			);
 		}
 	});
 
@@ -92,7 +94,7 @@
 <div class="flex space-x-2 text-sm mt-2">
 	{#if noTagArticles.length > 0}
 		<button on:click={toggleNoTagArticles}>
-			{noTagArticles.length} Articles Without Tags
+			{noTagArticles.length} article(s) without tags
 			{#if showNoTagArticles}
 				&#9660;
 			{/if}
@@ -101,7 +103,7 @@
 
 	{#if noTimeToReadArticles.length > 0}
 		<button on:click={toggleNoTimeToReadArticles}>
-			{noTimeToReadArticles.length} Articles Without Time to Read
+			{noTimeToReadArticles.length} article(s) without estimated time to read
 			{#if showNoTimeToReadArticles}
 				&#9660;
 			{/if}
@@ -110,7 +112,6 @@
 </div>
 
 {#if showNoTagArticles}
-	<h3 class="mt-4">Articles Without Tags:</h3>
 	<ul class="list-disc pl-5">
 		{#each noTagArticles as article}
 			<li>
@@ -121,7 +122,6 @@
 {/if}
 
 {#if showNoTimeToReadArticles}
-	<h3 class="mt-4">Articles Without Time to Read:</h3>
 	<ul class="list-disc pl-5">
 		{#each noTimeToReadArticles as article}
 			<li>
