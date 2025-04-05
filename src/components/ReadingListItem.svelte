@@ -34,11 +34,13 @@
 						<span class="chip">{tag.tag}</span>
 					{/each}
 				{/if}
+				{@html typeof item.time_to_read === 'number'
+					? `<span class="chip">${item.time_to_read} minutes</span>`
+					: ''}
 				{getDomain(item.resolved_url)}
-				{@html typeof item.time_to_read === 'number' ? `&bull; ${item.time_to_read} minutes` : ''}
 			</span>
 
-			{@html item.excerpt ? item.excerpt : '<i>Article excerpt will appear here...</i>'}
+			{@html item.excerpt ? item.excerpt : ''}
 		</p>
 	</div>
 </li>

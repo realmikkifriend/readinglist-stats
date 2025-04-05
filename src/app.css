@@ -35,11 +35,11 @@ h4 {
 }
 
 span.meta {
-	@apply opacity-70;
+	@apply opacity-70 block;
 }
 
 #quickreference .meta {
-	@apply italic whitespace-nowrap;
+	@apply italic whitespace-nowrap inline;
 }
 
 td {
