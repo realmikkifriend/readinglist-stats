@@ -10,10 +10,12 @@
 	let showNoTagArticles = false;
 	let showNoTimeToReadArticles = false;
 	let totalMinutes = 0;
+	let averageMinutes = 0;
 
 	onMount(() => {
 		if (list.length > 0) {
 			totalMinutes = list.reduce((sum, article) => sum + (article.time_to_read || 0), 0);
+			averageMinutes = Math.floor(totalMinutes / list.length);
 
 			oldestArticle = list.reduce((prev, current) => {
 				return prev.time_added < current.time_added ? prev : current;
@@ -56,11 +58,10 @@
 			<td>Total Articles</td>
 			<td>
 				{list.length}
-				{#if totalMinutes > 59}
-					(~{(totalMinutes / 60).toFixed(1)} hours to read)
-				{:else}
-					(~{totalMinutes} minutes to read)
-				{/if}
+				(~{totalMinutes > 59
+					? (totalMinutes / 60).toFixed(1) + ' hours'
+					: totalMinutes + ' minutes'}
+				to read, ~{averageMinutes} minutes average)
 			</td>
 		</tr>
 		{#if oldestArticle}
