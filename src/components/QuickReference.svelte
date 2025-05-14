@@ -1,10 +1,11 @@
 <script>
 	import { onMount } from 'svelte';
 	import { calculateWeeksAgo } from '../utils';
+	import ReadingListItem from './ReadingListItem.svelte';
 
 	export let list;
 
-	let oldestArticle, longestArticle, shortestArticle;
+	let oldestArticle, longestArticle, shortestArticle, suggestedArticle;
 	let noTagArticles = [];
 	let noTimeToReadArticles = [];
 	let showNoTagArticles = false;
@@ -39,6 +40,17 @@
 			noTimeToReadArticles = list.filter(
 				(article) => article.time_to_read == null || article.time_to_read < 1
 			);
+
+			suggestedArticle =
+				noTagArticles.length > 0
+					? noTagArticles.reduce((prev, current) => {
+							return prev.time_added < current.time_added ? prev : current;
+						})
+					: noTimeToReadArticles.length > 0
+						? noTimeToReadArticles.reduce((prev, current) => {
+								return prev.time_added < current.time_added ? prev : current;
+							})
+						: list[Math.floor(Math.random() * list.length)];
 		}
 	});
 
@@ -51,7 +63,13 @@
 	};
 </script>
 
+{#if suggestedArticle}
+	<h2>Suggested</h2>
+	<ReadingListItem item={suggestedArticle} />
+{/if}
+
 <h2>Quick Reference</h2>
+
 <table id="quickreference" class="table-auto">
 	<tbody>
 		<tr>
@@ -64,6 +82,7 @@
 				to read, ~{averageMinutes} minutes average)
 			</td>
 		</tr>
+
 		{#if oldestArticle}
 			<tr>
 				<td>Oldest</td>
