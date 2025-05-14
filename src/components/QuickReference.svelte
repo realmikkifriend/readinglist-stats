@@ -51,8 +51,14 @@
 				suggestedArticle = noTimeToReadArticles.reduce((prev, current) => {
 					return prev.time_added < current.time_added ? prev : current;
 				});
+			} else if (oldestArticle.time_added < new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)) {
+				suggestionLogic = 'because article was added 30+ days ago';
+				suggestedArticle = oldestArticle;
+			} else if (list.length > 35) {
+				suggestionLogic = 'because reading list is too long';
+				suggestedArticle = shortestArticle;
 			} else {
-				suggestionLogic = 'random article';
+				suggestionLogic = 'random';
 				suggestedArticle = list[Math.floor(Math.random() * list.length)];
 			}
 		}
