@@ -33,6 +33,8 @@
 					{#each Object.values(item.tags) as tag, index}
 						<span class="chip">{tag.tag}</span>
 					{/each}
+				{:else}
+					<span class="chip" style="background-color: orange;">NO TAG</span>
 				{/if}
 				{@html typeof item.time_to_read === 'number'
 					? `<span class="chip">${item.time_to_read} minutes</span>`
