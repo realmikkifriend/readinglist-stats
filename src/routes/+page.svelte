@@ -1,20 +1,14 @@
 <script>
-	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 	import { Body } from 'svelte-body';
+	import { readingList } from '../stores';
 	import QuickReference from '../components/QuickReference.svelte';
 	import Charts from '../components/Charts.svelte';
 	import ReadingList from '../components/ReadingList.svelte';
-	import { getFilteredList } from '../utils';
+	// import { getFilteredList } from '../utils';
 
-	export let data;
-
-	let authUri, list, token;
-
-	onMount(() => {
-		authUri = data.authUri;
-		token = data.accessToken;
-		list = getFilteredList(data.response);
-	});
+	let list;
+	$: list = get(readingList);
 </script>
 
 <Body />
@@ -23,19 +17,16 @@
 	<div class="max-w-xl w-full bg-secondary p-6 rounded-lg shadow-md mt-8 relative">
 		<h1 class="mb-4">Reading List Stats</h1>
 
-		{#if typeof token !== 'string' || token.length === 0}
+		{#if typeof list !== 'object'}
 			<div class="flex flex-col sm:flex-row items-center">
-				<button class="mr-2 my-1 h-fit">
-					<a href={authUri} class="button whitespace-nowrap">Authorize to Access Reading List</a>
-				</button>
 				<p class="text-center sm:text-left">
 					This mini-app will grab a copy of your current reading list and then display some stats
 					and charts.
 				</p>
 			</div>
-		{:else if list.length > 0}
-			<QuickReference {list} />
-			<Charts {list} />
+		{:else if list.filter((item) => item.type === 'bookmark').length > 0}
+			<!-- <QuickReference {list} /> -->
+			<!-- <Charts {list} /> -->
 			<ReadingList {list} />
 		{:else}
 			List empty
