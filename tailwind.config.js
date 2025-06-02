@@ -16,33 +16,6 @@ const config = {
 						primary: '#1f2937'
 					},
 					link: '#3b82f6'
-				},
-				extreme: {
-					primary: 'purple',
-					secondary: 'red',
-					accent: 'cyan',
-					font: {
-						primary: 'orange'
-					},
-					link: 'yellow'
-				},
-				forest: {
-					primary: '#00331F',
-					secondary: '#E9C46A',
-					accent: 'red',
-					font: {
-						primary: 'white'
-					},
-					link: '#00834e'
-				},
-				winter: {
-					primary: 'slateblue',
-					secondary: 'lightblue',
-					accent: 'blue',
-					font: {
-						primary: 'white'
-					},
-					link: 'skyblue'
 				}
 			},
 			{

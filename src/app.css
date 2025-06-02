@@ -100,3 +100,15 @@ button > a {
 dfn {
 	@apply not-italic underline decoration-dashed decoration-accent cursor-help;
 }
+
+/* FORCE DARK MODE */
+@media (prefers-color-scheme: dark) {
+	html {
+		color-scheme: dark;
+	}
+}
+@media (prefers-color-scheme: light) {
+	html {
+		color-scheme: dark;
+	}
+}
