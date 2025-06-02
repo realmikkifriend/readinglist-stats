@@ -1,3 +1,3 @@
-# Pocket Stats _(pocket-stats)_
+# Reading List Stats _(readinglist-stats)_
 
-A micro-app that displays a Pocket user's reading list and various stats and charts.
+A micro-app that displays a user's reading list and various stats and charts. Originally written for Pocket, updated to use Instapaper.
