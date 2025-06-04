@@ -10,27 +10,59 @@ const instapaper = new Instapaper({
 	consumerSecret
 });
 
-const storedToken = get(userTokenStore);
+export const actions = {
+	login: async ({ request }) => {
+		userTokenStore.set(null);
+		readingList.set(null);
 
-if (storedToken === 'string') {
-	instapaper.withToken(storedToken);
-} else {
-	instapaper.setCredentials('username', 'password');
+		const data = await request.formData();
+		const username = data.get('username');
+		const password = data.get('password');
 
-	instapaper.fetchToken().then((newToken) => {
-		userTokenStore.set(newToken);
+		const result = await loginToInstapaper(username, password);
+		return result;
+	}
+};
 
-		instapaper.withToken(newToken);
-	});
+async function loginToInstapaper(username, password) {
+	const storedToken = get(userTokenStore);
+
+	if (typeof storedToken?.key === 'string') {
+		instapaper.withToken(storedToken);
+		await getBookmarks();
+		return { success: true };
+	} else {
+		if (typeof username === 'string' && username.trim() !== '') {
+			let response;
+			instapaper.setCredentials(username, password);
+			await instapaper
+				.fetchToken()
+				.then((token) => {
+					userTokenStore.set(token);
+					response = { success: true };
+				})
+				.catch((error) => {
+					response = { success: false, message: error.message };
+				});
+			return response;
+		} else {
+			userTokenStore.set(null);
+			readingList.set(null);
+			return { success: false, message: 'user not logged in' };
+		}
+	}
 }
 
-let bookmarks;
+await loginToInstapaper();
 
-try {
-	bookmarks = await instapaper.bookmarks.list({ limit: 50 });
-	bookmarks.count = bookmarks.filter((item) => item.type === 'bookmark').length;
-	readingList.set(bookmarks);
-} catch (error) {
-	console.error('Error fetching bookmarks:', error);
-	readingList.set([]);
+async function getBookmarks() {
+	let bookmarks;
+	try {
+		bookmarks = await instapaper.bookmarks.list({ limit: 500 });
+		bookmarks.count = bookmarks.filter((item) => item.type === 'bookmark').length;
+		readingList.set(bookmarks);
+	} catch (error) {
+		console.error('Error fetching bookmarks:', error);
+		readingList.set();
+	}
 }
