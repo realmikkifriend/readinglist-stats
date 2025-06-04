@@ -12,7 +12,7 @@
 	}
 </script>
 
-<li class="my-4 min-h-[6.75rem] line-clamp-3">
+<li class="my-4 max-h-[6.75rem] line-clamp-3">
 	<!-- {#if item.top_image_url}
 		<img
 			src={item.top_image_url}
@@ -26,7 +26,7 @@
 		</a>
 	</h4>
 
-	<div class="min-h-14">
+	<div class=" max-h-14">
 		<p class="text-sm">
 			<span class="meta">
 				<!-- {#if item.tags && Object.keys(item.tags).length > 0}
