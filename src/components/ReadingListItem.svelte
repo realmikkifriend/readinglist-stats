@@ -6,7 +6,7 @@
 			const domain = new URL(url).hostname;
 			return domain.replace('www.', '');
 		} catch (error) {
-			console.error('Invalid URL:', error);
+			// console.error('Invalid URL:', error);
 			return '';
 		}
 	}
@@ -29,6 +29,9 @@
 	<div class=" max-h-14">
 		<p class="text-sm">
 			<span class="meta">
+				{#if item.progress > 0}
+					<span class="chip">{Math.round(item.progress * 100, 2)}% finished</span>
+				{/if}
 				<!-- {#if item.tags && Object.keys(item.tags).length > 0}
 					{#each Object.values(item.tags) as tag, index}
 						<span class="chip">{tag.tag}</span>
