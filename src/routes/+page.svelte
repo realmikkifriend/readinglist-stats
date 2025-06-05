@@ -4,7 +4,7 @@
 	import { Body } from 'svelte-body';
 	import { readingList } from '../stores';
 	import QuickReference from '../components/QuickReference.svelte';
-	import Charts from '../components/Charts.svelte';
+	// import Charts from '../components/Charts.svelte';
 	import ReadingList from '../components/ReadingList.svelte';
 
 	export let form;
@@ -66,7 +66,7 @@
 				{/if}
 			</div>
 		{:else if typeof list === 'object' && list?.filter((item) => item.type === 'bookmark').length > 0}
-			<!-- <QuickReference {list} /> -->
+			<QuickReference {list} />
 			<!-- <Charts {list} /> -->
 			<ReadingList {list} />
 		{:else}

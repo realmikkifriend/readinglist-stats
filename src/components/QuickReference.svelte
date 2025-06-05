@@ -5,72 +5,68 @@
 
 	export let list;
 
-	let oldestArticle, longestArticle, shortestArticle, suggestedArticle, suggestionLogic;
-	let noTagArticles = [];
-	let noTimeToReadArticles = [];
-	let showNoTagArticles = false;
-	let showNoTimeToReadArticles = false;
-	let totalMinutes = 0;
-	let averageMinutes = 0;
+	let suggestedArticle, suggestionLogic;
+	let oldestArticle;
+	// let longestArticle, shortestArticle;
+	// let noTagArticles = [];
+	// let noTimeToReadArticles = [];
+	// let showNoTagArticles = false;
+	// let showNoTimeToReadArticles = false;
+	// let totalMinutes = 0;
+	// let averageMinutes = 0;
 
-	onMount(() => {
-		if (list.length > 0) {
-			totalMinutes = list.reduce((sum, article) => sum + (article.time_to_read || 0), 0);
-			averageMinutes = Math.floor(totalMinutes / list.length);
+	if (list.count > 0) {
+		oldestArticle = list.reduce((prev, current) => {
+			return prev.time < current.time ? prev : current;
+		});
 
-			oldestArticle = list.reduce((prev, current) => {
-				return prev.time_added < current.time_added ? prev : current;
-			});
-
-			const validArticles = list.filter((article) => article.time_to_read != null);
-
-			if (validArticles.length > 0) {
-				longestArticle = validArticles.reduce((prev, current) => {
-					return prev.time_to_read > current.time_to_read ? prev : current;
-				});
-				shortestArticle = validArticles.reduce((prev, current) => {
-					return prev.time_to_read < current.time_to_read ? prev : current;
-				});
-			}
-
-			noTagArticles = list.filter(
-				(article) => !article.tags || Object.keys(article.tags).length === 0
-			);
-
-			noTimeToReadArticles = list.filter(
-				(article) => article.time_to_read == null || article.time_to_read < 1
-			);
-
-			if (noTagArticles.length > 0) {
-				suggestionLogic = 'because article has no tag';
-				suggestedArticle = noTagArticles.reduce((prev, current) => {
-					return prev.time_added < current.time_added ? prev : current;
-				});
-			} else if (noTimeToReadArticles.length > 0) {
-				suggestionLogic = 'because article has no estimated time to read';
-				suggestedArticle = noTimeToReadArticles.reduce((prev, current) => {
-					return prev.time_added < current.time_added ? prev : current;
-				});
-			} else if (oldestArticle.time_added < new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)) {
-				suggestionLogic = 'because article was added 30+ days ago';
-				suggestedArticle = oldestArticle;
-			} else if (list.length > 35) {
-				suggestionLogic = 'because reading list is too long';
-				suggestedArticle = shortestArticle;
-			} else {
-				suggestionLogic = 'random';
-				suggestedArticle = list[Math.floor(Math.random() * list.length)];
-			}
+		// 	totalMinutes = list.reduce((sum, article) => sum + (article.time_to_read || 0), 0);
+		// 	averageMinutes = Math.floor(totalMinutes / list.length);
+		// 	const validArticles = list.filter((article) => article.time_to_read != null);
+		// 	if (validArticles.length > 0) {
+		// 		longestArticle = validArticles.reduce((prev, current) => {
+		// 			return prev.time_to_read > current.time_to_read ? prev : current;
+		// 		});
+		// 		shortestArticle = validArticles.reduce((prev, current) => {
+		// 			return prev.time_to_read < current.time_to_read ? prev : current;
+		// 		});
+		// 	}
+		// 	noTagArticles = list.filter(
+		// 		(article) => !article.tags || Object.keys(article.tags).length === 0
+		// 	);
+		// 	noTimeToReadArticles = list.filter(
+		// 		(article) => article.time_to_read == null || article.time_to_read < 1
+		// 	);
+		// 	if (noTagArticles.length > 0) {
+		// 		suggestionLogic = 'because article has no tag';
+		// 		suggestedArticle = noTagArticles.reduce((prev, current) => {
+		// 			return prev.time < current.time ? prev : current;
+		// 		});
+		// 	} else if (noTimeToReadArticles.length > 0) {
+		// 		suggestionLogic = 'because article has no estimated time to read';
+		// 		suggestedArticle = noTimeToReadArticles.reduce((prev, current) => {
+		// 			return prev.time < current.time ? prev : current;
+		// 		});
+		// 	} else
+		if (oldestArticle.time * 1000 < new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)) {
+			suggestionLogic = 'because article was added 30+ days ago';
+			suggestedArticle = oldestArticle;
+		} else if (list.length > 35) {
+			suggestionLogic = 'because reading list is too long';
+			suggestedArticle = oldestArticle; // ideally `shortestArticle`
+		} else {
+			suggestionLogic = 'random';
+			suggestedArticle = list[Math.floor(Math.random() * list.length)];
 		}
-	});
+	}
 
-	const toggleNoTagArticles = () => {
-		showNoTagArticles = !showNoTagArticles;
-	};
+	// const toggleNoTagArticles = () => {
+	// 	showNoTagArticles = !showNoTagArticles;
+	// };
 
-	const toggleNoTimeToReadArticles = () => {
-		showNoTimeToReadArticles = !showNoTimeToReadArticles;
-	};
+	// const toggleNoTimeToReadArticles = () => {
+	// 	showNoTimeToReadArticles = !showNoTimeToReadArticles;
+	// };
 </script>
 
 {#if suggestedArticle}
@@ -87,11 +83,11 @@
 		<tr>
 			<td>Total Articles</td>
 			<td>
-				{list.length}
-				(~{totalMinutes > 59
+				{list.count}
+				<!-- (~{totalMinutes > 59
 					? (totalMinutes / 60).toFixed(1) + ' hours'
 					: totalMinutes + ' minutes'}
-				to read, ~{averageMinutes} minutes average)
+				to read, ~{averageMinutes} minutes average) -->
 			</td>
 		</tr>
 
@@ -99,15 +95,15 @@
 			<tr>
 				<td>Oldest</td>
 				<td>
-					<a href={oldestArticle.resolved_url}>{oldestArticle.resolved_title}</a>
+					<a href={oldestArticle.url}>{oldestArticle.title}</a>
 					<span class="meta">
-						saved {calculateWeeksAgo(oldestArticle.time_added)} weeks ago
+						saved {calculateWeeksAgo(oldestArticle.time)} weeks ago
 					</span>
 				</td>
 			</tr>
 		{/if}
 
-		{#if longestArticle}
+		<!-- {#if longestArticle}
 			<tr>
 				<td>Longest</td>
 				<td>
@@ -117,9 +113,9 @@
 					</span>
 				</td>
 			</tr>
-		{/if}
+		{/if} -->
 
-		{#if shortestArticle}
+		<!-- {#if shortestArticle}
 			<tr>
 				<td>Shortest</td>
 				<td>
@@ -129,31 +125,31 @@
 					</span>
 				</td>
 			</tr>
-		{/if}
+		{/if} -->
 	</tbody>
 </table>
 
 <div class="flex space-x-2 text-sm mt-2">
-	{#if noTagArticles.length > 0}
+	<!-- {#if noTagArticles.length > 0}
 		<button on:click={toggleNoTagArticles}>
 			{noTagArticles.length} article(s) without tags
 			{#if showNoTagArticles}
 				&#9660;
 			{/if}
 		</button>
-	{/if}
+	{/if} -->
 
-	{#if noTimeToReadArticles.length > 0}
+	<!-- {#if noTimeToReadArticles.length > 0}
 		<button on:click={toggleNoTimeToReadArticles}>
 			{noTimeToReadArticles.length} article(s) without estimated time to read
 			{#if showNoTimeToReadArticles}
 				&#9660;
 			{/if}
 		</button>
-	{/if}
+	{/if} -->
 </div>
 
-{#if showNoTagArticles}
+<!-- {#if showNoTagArticles}
 	<ul class="list-disc pl-5">
 		{#each noTagArticles as article}
 			<li>
@@ -161,9 +157,9 @@
 			</li>
 		{/each}
 	</ul>
-{/if}
+{/if} -->
 
-{#if showNoTimeToReadArticles}
+<!-- {#if showNoTimeToReadArticles}
 	<ul class="list-disc pl-5">
 		{#each noTimeToReadArticles as article}
 			<li>
@@ -171,4 +167,4 @@
 			</li>
 		{/each}
 	</ul>
-{/if}
+{/if} -->
