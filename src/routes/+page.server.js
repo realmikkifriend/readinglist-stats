@@ -4,6 +4,8 @@ import { Instapaper } from 'instapaper-ts';
 
 const consumerKey = import.meta.env.VITE_CONSUMER_KEY;
 const consumerSecret = import.meta.env.VITE_CONSUMER_SECRET;
+// userTokenStore.set(null);
+// readingList.set(null);
 
 const instapaper = new Instapaper({
 	consumerKey,
@@ -11,7 +13,7 @@ const instapaper = new Instapaper({
 });
 
 export const actions = {
-	login: async ({ request }) => {
+	default: async ({ request }) => {
 		userTokenStore.set(null);
 		readingList.set(null);
 
@@ -39,11 +41,13 @@ async function loginToInstapaper(username, password) {
 				.fetchToken()
 				.then((token) => {
 					userTokenStore.set(token);
+					readingList.set({ loggedIn: true });
 					response = { success: true };
 				})
 				.catch((error) => {
 					response = { success: false, message: error.message };
 				});
+			await getBookmarks();
 			return response;
 		} else {
 			userTokenStore.set(null);
@@ -63,6 +67,6 @@ async function getBookmarks() {
 		readingList.set(bookmarks);
 	} catch (error) {
 		console.error('Error fetching bookmarks:', error);
-		readingList.set();
+		readingList.set(null);
 	}
 }
