@@ -13,7 +13,8 @@
 		if (form.success === true) {
 			successValue = 'logged in, reload page';
 		} else {
-			successValue = 'login error, check details and try again';
+			successValue =
+				'login error, check details and try again' + (form.message ? ` (${form.message})` : '');
 		}
 	}
 
