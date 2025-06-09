@@ -7,6 +7,7 @@
 
 	let suggestedArticle, suggestionLogic;
 	let oldestArticle;
+	let furthestArticle;
 	// let longestArticle, shortestArticle;
 	// let noTagArticles = [];
 	// let noTimeToReadArticles = [];
@@ -18,6 +19,10 @@
 	if (list.count > 0) {
 		oldestArticle = list.reduce((prev, current) => {
 			return prev.time < current.time ? prev : current;
+		});
+
+		furthestArticle = list.reduce((prev, current) => {
+			return prev.progress > current.progress ? prev : current;
 		});
 
 		// 	totalMinutes = list.reduce((sum, article) => sum + (article.time_to_read || 0), 0);
@@ -48,12 +53,15 @@
 		// 			return prev.time < current.time ? prev : current;
 		// 		});
 		// 	} else
-		if (oldestArticle.time * 1000 < new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)) {
+		if (furthestArticle) {
+			suggestionLogic = "because you've already started this one";
+			suggestedArticle = furthestArticle;
+		} else if (oldestArticle.time * 1000 < new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)) {
 			suggestionLogic = 'because article was added 30+ days ago';
 			suggestedArticle = oldestArticle;
-		} else if (list.length > 35) {
+		} else if (list.length > 30) {
 			suggestionLogic = 'because reading list is too long';
-			suggestedArticle = oldestArticle; // ideally `shortestArticle`
+			suggestedArticle = furthestArticle ? furthestArticle : oldestArticle; // ideally `shortestArticle`
 		} else {
 			suggestionLogic = 'random';
 			suggestedArticle = list[Math.floor(Math.random() * list.length)];
@@ -102,6 +110,19 @@
 				</td>
 			</tr>
 		{/if}
+
+		<!-- redundant to suggestion section -->
+		<!-- {#if furthestArticle}
+			<tr>
+				<td>Continue...</td>
+				<td>
+					<a href={furthestArticle.url}>{furthestArticle.title}</a>
+					<span class="meta">
+						read {Math.round(furthestArticle.progress * 100, 2)}%
+					</span>
+				</td>
+			</tr>
+		{/if} -->
 
 		<!-- {#if longestArticle}
 			<tr>
