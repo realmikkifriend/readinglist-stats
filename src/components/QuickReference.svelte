@@ -22,8 +22,11 @@
 		});
 
 		furthestArticle = list.reduce((prev, current) => {
-			return prev.progress > current.progress ? prev : current;
-		});
+			if (current.progress != null && current.progress !== 0) {
+				return prev === null || prev.progress > current.progress ? prev : current;
+			}
+			return prev;
+		}, null);
 
 		// 	totalMinutes = list.reduce((sum, article) => sum + (article.time_to_read || 0), 0);
 		// 	averageMinutes = Math.floor(totalMinutes / list.length);
