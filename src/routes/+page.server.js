@@ -4,8 +4,7 @@ import { Instapaper } from 'instapaper-ts';
 
 const consumerKey = import.meta.env.VITE_CONSUMER_KEY;
 const consumerSecret = import.meta.env.VITE_CONSUMER_SECRET;
-// userTokenStore.set(null);
-// readingList.set(null);
+// resetStores();
 
 const instapaper = new Instapaper({
 	consumerKey,
@@ -45,13 +44,13 @@ async function loginToInstapaper(username, password) {
 					response = { success: true };
 				})
 				.catch((error) => {
+					resetStores();
 					response = { success: false, message: error.message };
 				});
 			await getBookmarks();
 			return response;
 		} else {
-			userTokenStore.set(null);
-			readingList.set(null);
+			resetStores();
 			return { success: false, message: 'user not logged in' };
 		}
 	}
@@ -69,4 +68,9 @@ async function getBookmarks() {
 		console.error('Error fetching bookmarks:', error);
 		readingList.set(null);
 	}
+}
+
+function resetStores() {
+	userTokenStore.set(null);
+	readingList.set(null);
 }
