@@ -29,7 +29,7 @@
 		}, null);
 
 		// 	totalMinutes = list.reduce((sum, article) => sum + (article.time_to_read || 0), 0);
-		// 	averageMinutes = Math.floor(totalMinutes / list.length);
+		// 	averageMinutes = Math.floor(totalMinutes / list.count);
 		// 	const validArticles = list.filter((article) => article.time_to_read != null);
 		// 	if (validArticles.length > 0) {
 		// 		longestArticle = validArticles.reduce((prev, current) => {
@@ -62,12 +62,12 @@
 		} else if (oldestArticle.time * 1000 < new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)) {
 			suggestionLogic = 'because article was added 30+ days ago';
 			suggestedArticle = oldestArticle;
-		} else if (list.length > 30) {
+		} else if (list.count > 30) {
 			suggestionLogic = 'because reading list is too long';
 			suggestedArticle = furthestArticle ? furthestArticle : oldestArticle; // ideally `shortestArticle`
 		} else {
 			suggestionLogic = 'random';
-			suggestedArticle = list[Math.floor(Math.random() * list.length)];
+			suggestedArticle = list[Math.floor(Math.random() * list.count)];
 		}
 	}
 
