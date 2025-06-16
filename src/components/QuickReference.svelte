@@ -4,6 +4,7 @@
 	import ReadingListItem from './ReadingListItem.svelte';
 
 	export let list;
+	let articles = list.filter((item) => item.type === 'bookmark');
 
 	let suggestedArticle, suggestionLogic;
 	let oldestArticle;
@@ -17,20 +18,20 @@
 	// let averageMinutes = 0;
 
 	if (list.count > 0) {
-		oldestArticle = list.reduce((prev, current) => {
+		oldestArticle = articles.reduce((prev, current) => {
 			return prev.time < current.time ? prev : current;
 		});
 
-		furthestArticle = list.reduce((prev, current) => {
-			if (current.progress != null && current.progress !== 0) {
-				return prev === null || prev.progress > current.progress ? prev : current;
+		furthestArticle = articles.reduce((prev, current) => {
+			if (current.progress != null && current.progress > (prev?.progress || 0)) {
+				return current;
 			}
 			return prev;
 		}, null);
 
-		// 	totalMinutes = list.reduce((sum, article) => sum + (article.time_to_read || 0), 0);
+		// 	totalMinutes = articles.reduce((sum, article) => sum + (article.time_to_read || 0), 0);
 		// 	averageMinutes = Math.floor(totalMinutes / list.count);
-		// 	const validArticles = list.filter((article) => article.time_to_read != null);
+		// 	const validArticles = articles.filter((article) => article.time_to_read != null);
 		// 	if (validArticles.length > 0) {
 		// 		longestArticle = validArticles.reduce((prev, current) => {
 		// 			return prev.time_to_read > current.time_to_read ? prev : current;
@@ -39,10 +40,10 @@
 		// 			return prev.time_to_read < current.time_to_read ? prev : current;
 		// 		});
 		// 	}
-		// 	noTagArticles = list.filter(
+		// 	noTagArticles = articles.filter(
 		// 		(article) => !article.tags || Object.keys(article.tags).length === 0
 		// 	);
-		// 	noTimeToReadArticles = list.filter(
+		// 	noTimeToReadArticles = articles.filter(
 		// 		(article) => article.time_to_read == null || article.time_to_read < 1
 		// 	);
 		// 	if (noTagArticles.length > 0) {
@@ -67,7 +68,7 @@
 			suggestedArticle = furthestArticle ? furthestArticle : oldestArticle; // ideally `shortestArticle`
 		} else {
 			suggestionLogic = 'random';
-			suggestedArticle = list[Math.floor(Math.random() * list.count)];
+			suggestedArticle = articles[Math.floor(Math.random() * list.count)];
 		}
 	}
 
@@ -153,8 +154,8 @@
 	</tbody>
 </table>
 
-<div class="flex space-x-2 text-sm mt-2">
-	<!-- {#if noTagArticles.length > 0}
+<!-- <div class="flex space-x-2 text-sm mt-2">
+	{#if noTagArticles.length > 0}
 		<button on:click={toggleNoTagArticles}>
 			{noTagArticles.length} article(s) without tags
 			{#if showNoTagArticles}
@@ -163,15 +164,15 @@
 		</button>
 	{/if} -->
 
-	<!-- {#if noTimeToReadArticles.length > 0}
+<!-- {#if noTimeToReadArticles.length > 0}
 		<button on:click={toggleNoTimeToReadArticles}>
 			{noTimeToReadArticles.length} article(s) without estimated time to read
 			{#if showNoTimeToReadArticles}
 				&#9660;
 			{/if}
 		</button>
-	{/if} -->
-</div>
+	{/if}
+</div> -->
 
 <!-- {#if showNoTagArticles}
 	<ul class="list-disc pl-5">
