@@ -35,7 +35,7 @@
 						and charts.
 					</p>
 
-					<form class="px-4 py-6" method="POST" use:enhance>
+					<form class="px-4 py-6" method="POST" action="?/login" use:enhance>
 						<label class="block text-primary text-sm font-bold mb-2" for="username">
 							Instapaper username/email
 						</label>
@@ -66,14 +66,23 @@
 						<p class="text-red-500 text-sm mt-2">{successValue}</p>
 					{/if}
 				</div>
-			{:else if list.loggedIn}
-				Your reading list is being retrieved...
-			{:else if typeof list === 'object' && list?.filter((item) => item.type === 'bookmark').length > 0}
-				<QuickReference {list} />
-				<!-- <Charts {list} /> -->
-				<ReadingList {list} />
 			{:else}
-				Your reading list is empty...
+				<form class="absolute right-6 top-6" method="POST" action="?/logout" use:enhance>
+					<button
+						class="mx-auto bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+					>
+						log out
+					</button>
+				</form>
+				{#if list.loggedIn}
+					Your reading list is being retrieved...
+				{:else if typeof list === 'object' && list?.filter((item) => item.type === 'bookmark').length > 0}
+					<QuickReference {list} />
+					<!-- <Charts {list} /> -->
+					<ReadingList {list} />
+				{:else}
+					Your reading list is empty...
+				{/if}
 			{/if}
 
 			<footer>
