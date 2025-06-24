@@ -1,3 +1,4 @@
+import { redirect } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 import { userTokenStore, readingList } from '../stores';
 import { Instapaper } from 'instapaper-ts';
@@ -12,16 +13,21 @@ const instapaper = new Instapaper({
 });
 
 export const actions = {
-	default: async ({ request }) => {
-		userTokenStore.set(null);
-		readingList.set(null);
+	login: async ({ request, url }) => {
+		resetStores();
 
 		const data = await request.formData();
 		const username = data.get('username');
 		const password = data.get('password');
 
 		const result = await loginToInstapaper(username, password);
-		return result;
+		redirect(303, '/');
+		// return result;
+	},
+
+	logout: async () => {
+		resetStores();
+		redirect(303, '/');
 	}
 };
 
