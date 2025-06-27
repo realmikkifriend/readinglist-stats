@@ -22,12 +22,13 @@ export const actions = {
 
 		const result = await loginToInstapaper(username, password);
 		redirect(303, url.origin);
-		// return result;
+		return result;
 	},
 
 	logout: async ({ url }) => {
 		resetStores();
 		redirect(303, url.origin);
+		return { success: true };
 	}
 };
 
