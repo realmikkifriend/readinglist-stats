@@ -21,13 +21,13 @@ export const actions = {
 		const password = data.get('password');
 
 		const result = await loginToInstapaper(username, password);
-		redirect(303, '/');
+		redirect(303, url.origin);
 		// return result;
 	},
 
-	logout: async () => {
+	logout: async ({ url }) => {
 		resetStores();
-		redirect(303, '/');
+		redirect(303, url.origin);
 	}
 };
 
