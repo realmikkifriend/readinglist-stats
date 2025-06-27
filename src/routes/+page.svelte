@@ -1,17 +1,11 @@
 <script>
 	import { enhance } from '$app/forms';
-	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
 	import { get } from 'svelte/store';
 	import { Body } from 'svelte-body';
 	import { readingList } from '../stores';
 	import QuickReference from '../components/QuickReference.svelte';
 	// import Charts from '../components/Charts.svelte';
 	import ReadingList from '../components/ReadingList.svelte';
-
-	$: if ($page.url.pathname !== '/') {
-		goto($page.url.origin);
-	}
 
 	export let form;
 	let successValue;
